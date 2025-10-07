@@ -1,0 +1,33 @@
+{
+  "nombre": "Restaurante Demo",
+  "categorias": [
+    {
+      "titulo": "Para picar",
+      "items": [
+        {
+          "nombre": "Ceviche de la casa",
+          "desc": "Pescado fresco, limón, cilantro y ají.",
+          "precio": 8500,
+          "img": "/img/ceviche.jpg"
+        },
+        {
+          "nombre": "Empanada de mariscos",
+          "desc": "Mezcla de mariscos de la caleta.",
+          "precio": 2200,
+          "img": "/img/empanada.jpg"
+        }
+      ]
+    },
+    {
+      "titulo": "Platos principales",
+      "items": [
+        {
+          "nombre": "Paila marina",
+          "desc": "Caldo concentrado con mariscos.",
+          "precio": 11900,
+          "img": "/img/paila.jpg"
+        }
+      ]
+    }
+  ]
+}
