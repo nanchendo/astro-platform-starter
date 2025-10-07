@@ -1,22 +1,29 @@
 ---
+---
 import Layout from '../layouts/Layout.astro';
 
 const { rest } = Astro.params;
 
-let data: any = null;
+// Cargamos el JSON del restaurante por slug
+let data = null;
 try {
-  // Importa el JSON según el slug de la URL: /juanito -> juanito.json
   const mod = await import(`../data/restaurants/${rest}.json`);
   data = mod.default;
 } catch (err) {
-  // Si no existe el JSON, mostramos un 404 simple
-  // También puedes redirigir a Inicio si prefieres.
   data = null;
 }
 
 if (!data) {
+  // 404 simple si no existe el json
   throw new Error(`Restaurante no encontrado: ${rest}`);
 }
+
+// Construimos la URL del menú y la del QR fuera del markup
+const menuUrl = Astro.site
+  ? new URL(`/${rest}`, Astro.site).toString()
+  : `/${rest}`;
+
+const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(menuUrl)}`;
 ---
 
 <Layout title={`🍽️ ${data.nombre} — Menú`}>
@@ -27,14 +34,12 @@ if (!data) {
     <div>
       <p class="text-sm text-slate-400 mb-2">Escanéame para abrir este menú:</p>
       <img
-        src={`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(Astro.site ? new URL(\`/${rest}\`, Astro.site).toString() : \`/${rest}\`)}`}
+        src={qrUrl}
         alt={`QR de ${data.nombre}`}
         class="border rounded bg-white p-2"
       />
     </div>
-    <p class="text-slate-400 text-sm break-all">
-      {Astro.site ? new URL(`/${rest}`, Astro.site).toString() : `/${rest}`}
-    </p>
+    <p class="text-slate-400 text-sm break-all">{menuUrl}</p>
   </div>
 
   {data.categorias?.map((cat) => (
