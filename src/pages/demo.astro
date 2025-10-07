@@ -5,6 +5,18 @@ import menu from '../data/menu.json';
 
 <Layout title="Demo de Menú">
   <h1 class="text-3xl font-bold mb-6">🍽️ {menu.nombre} — Demo</h1>
+<div class="my-6 flex items-center gap-6">
+  <div>
+    <p class="text-sm text-slate-400 mb-2">Escanéame para abrir este menú:</p>
+    <img
+      src={`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent('https://mariatech.netlify.app/demo')}`}
+      alt="QR del menú"
+      class="border rounded bg-white p-2"
+    />
+  </div>
+  <p class="text-slate-400 text-sm">Puedes reemplazar la URL por la del restaurante cuando publiques su menú.</p>
+</div>
+
 
   {menu.categorias.map((cat) => (
     <section class="mb-10">
