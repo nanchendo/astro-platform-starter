@@ -1,60 +1,61 @@
 ---
----
 import Layout from '../layouts/Layout.astro';
 
 const { rest } = Astro.params;
 
-// Cargamos el JSON del restaurante por slug
+// Leer JSON del restaurante por slug
 let data = null;
 try {
   const mod = await import(`../data/restaurants/${rest}.json`);
   data = mod.default;
-} catch (err) {
+} catch (e) {
   data = null;
 }
 
-if (!data) {
-  // 404 simple si no existe el json
-  throw new Error(`Restaurante no encontrado: ${rest}`);
-}
-
-// Construimos la URL del menú y la del QR fuera del markup
+// Construir URLs (así evitamos template strings dentro del HTML)
 const menuUrl = Astro.site
-  ? new URL(`/${rest}`, Astro.site).toString()
-  : `/${rest}`;
+  ? new URL('/' + rest, Astro.site).toString()
+  : '/' + rest;
 
-const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(menuUrl)}`;
+const qrUrl =
+  'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' +
+  encodeURIComponent(menuUrl);
 ---
 
-<Layout title={`🍽️ ${data.nombre} — Menú`}>
-  <h1 class="text-3xl font-bold mb-2">🍽️ {data.nombre}</h1>
+<Layout title={data ? ('Menu ' + data.nombre) : 'Menú no encontrado'}>
+  {data ? (
+    <>
+      <h1 class="text-3xl font-bold mb-2">🍽️ {data.nombre}</h1>
 
-  <!-- QR listo para imprimir -->
-  <div class="my-6 flex items-center gap-6">
-    <div>
-      <p class="text-sm text-slate-400 mb-2">Escanéame para abrir este menú:</p>
-      <img
-        src={qrUrl}
-        alt={`QR de ${data.nombre}`}
-        class="border rounded bg-white p-2"
-      />
-    </div>
-    <p class="text-slate-400 text-sm break-all">{menuUrl}</p>
-  </div>
-
-  {data.categorias?.map((cat) => (
-    <section class="mb-10">
-      <h2 class="text-2xl mb-4">{cat.titulo}</h2>
-      <div class="grid md:grid-cols-3 gap-6">
-        {cat.items?.map((it) => (
-          <article class="border rounded p-4">
-            {it.img && <img src={it.img} alt={it.nombre} class="mb-3 rounded" />}
-            <h3 class="font-semibold">{it.nombre}</h3>
-            <p class="text-sm text-slate-600">{it.desc}</p>
-            <p class="mt-2 font-bold">${it.precio.toLocaleString('es-CL')}</p>
-          </article>
-        ))}
+      <!-- QR listo para imprimir -->
+      <div class="my-6 flex items-center gap-6">
+        <div>
+          <p class="text-sm text-slate-400 mb-2">Escanéame para abrir este menú:</p>
+          <img src={qrUrl} alt={`QR de ${data.nombre}`} class="border rounded bg-white p-2" />
+        </div>
+        <p class="text-slate-400 text-sm break-all">{menuUrl}</p>
       </div>
-    </section>
-  ))}
+
+      {data.categorias?.map((cat) => (
+        <section class="mb-10">
+          <h2 class="text-2xl mb-4">{cat.titulo}</h2>
+          <div class="grid md:grid-cols-3 gap-6">
+            {cat.items?.map((it) => (
+              <article class="border rounded p-4">
+                {it.img && <img src={it.img} alt={it.nombre} class="mb-3 rounded" />}
+                <h3 class="font-semibold">{it.nombre}</h3>
+                <p class="text-sm text-slate-600">{it.desc}</p>
+                <p class="mt-2 font-bold">${it.precio.toLocaleString('es-CL')}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
+    </>
+  ) : (
+    <>
+      <h1 class="text-2xl font-bold">Restaurante no encontrado</h1>
+      <p class="mt-2 text-slate-400">Verifica la URL o el nombre del archivo JSON en <code>src/data/restaurants/</code>.</p>
+    </>
+  )}
 </Layout>
