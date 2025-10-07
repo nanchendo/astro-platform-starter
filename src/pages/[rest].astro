@@ -1,0 +1,55 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const { rest } = Astro.params;
+
+let data: any = null;
+try {
+  // Importa el JSON según el slug de la URL: /juanito -> juanito.json
+  const mod = await import(`../data/restaurants/${rest}.json`);
+  data = mod.default;
+} catch (err) {
+  // Si no existe el JSON, mostramos un 404 simple
+  // También puedes redirigir a Inicio si prefieres.
+  data = null;
+}
+
+if (!data) {
+  throw new Error(`Restaurante no encontrado: ${rest}`);
+}
+---
+
+<Layout title={`🍽️ ${data.nombre} — Menú`}>
+  <h1 class="text-3xl font-bold mb-2">🍽️ {data.nombre}</h1>
+
+  <!-- QR listo para imprimir -->
+  <div class="my-6 flex items-center gap-6">
+    <div>
+      <p class="text-sm text-slate-400 mb-2">Escanéame para abrir este menú:</p>
+      <img
+        src={`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(Astro.site ? new URL(\`/${rest}\`, Astro.site).toString() : \`/${rest}\`)}`}
+        alt={`QR de ${data.nombre}`}
+        class="border rounded bg-white p-2"
+      />
+    </div>
+    <p class="text-slate-400 text-sm break-all">
+      {Astro.site ? new URL(`/${rest}`, Astro.site).toString() : `/${rest}`}
+    </p>
+  </div>
+
+  {data.categorias?.map((cat) => (
+    <section class="mb-10">
+      <h2 class="text-2xl mb-4">{cat.titulo}</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        {cat.items?.map((it) => (
+          <article class="border rounded p-4">
+            {it.img && <img src={it.img} alt={it.nombre} class="mb-3 rounded" />}
+            <h3 class="font-semibold">{it.nombre}</h3>
+            <p class="text-sm text-slate-600">{it.desc}</p>
+            <p class="mt-2 font-bold">${it.precio.toLocaleString('es-CL')}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  ))}
+</Layout>
