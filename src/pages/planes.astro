@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Planes y Precios">
+  <h1 class="text-3xl font-bold mb-6">Planes MarIA</h1>
+  <p class="mb-8 text-slate-300">Empieza simple; escala cuando lo necesites.</p>
+
+  <div class="grid md:grid-cols-3 gap-6">
+    <section class="border rounded p-6">
+      <h2 class="text-xl font-bold mb-2">🌱 Básico</h2>
+      <ul class="list-disc ml-5 text-sm text-slate-300">
+        <li>Menú digital + QR</li><li>Hosting incluido</li><li>1 actualización mensual</li>
+      </ul>
+      <p class="mt-4 text-2xl font-bold">$0</p>
+      <a href="/contacto" class="btn mt-4">Lo quiero</a>
+    </section>
+
+    <section class="border rounded p-6">
+      <h2 class="text-xl font-bold mb-2">⚙️ Avanzado</h2>
+      <ul class="list-disc ml-5 text-sm text-slate-300">
+        <li>Panel para editar precios/fotos</li><li>Soporte prioritario</li><li>Dominio opcional</li>
+      </ul>
+      <p class="mt-4 text-2xl font-bold">$9.900/mes</p>
+      <a href="/contacto" class="btn mt-4">Probar</a>
+    </section>
+
+    <section class="border rounded p-6">
+      <h2 class="text-xl font-bold mb-2">🤖 Premium</h2>
+      <ul class="list-disc ml-5 text-sm text-slate-300">
+        <li>Analítica + IA básica</li><li>Predicción de demanda</li><li>Reportes mensuales</li>
+      </ul>
+      <p class="mt-4 text-2xl font-bold">$19.900/mes</p>
+      <a href="/contacto" class="btn mt-4">Agenda demo</a>
+    </section>
+  </div>
+</Layout>
