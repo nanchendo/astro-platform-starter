@@ -1,0 +1,11 @@
+{
+  "nombre": "Caleta Luz Marina",
+  "categorias": [
+    {
+      "titulo": "Especialidades",
+      "items": [
+        { "nombre": "Paila marina", "desc": "Caldo de mariscos de la casa.", "precio": 11900, "img": "/img/luzmarina/paila.jpg" }
+      ]
+    }
+  ]
+}
