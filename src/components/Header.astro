@@ -1,24 +1,25 @@
 ---
----
 const navItems = [
-  { linkText: 'Inicio', href: '/' },
-  { linkText: 'Planes', href: '/planes' },
-  { linkText: 'Demo', href: '/demo' },
-  { linkText: 'Contacto', href: '/contacto' }
+  { text: 'Inicio', href: '/' },
+  { text: 'Planes', href: '/planes' },
+  { text: 'Demo', href: '/demo' },
+  { text: 'Contacto', href: '/contacto' }
 ];
 ---
-<nav class="flex flex-wrap items-center justify-between gap-4 pt-6 pb-4 sm:pt-8 sm:pb-6 text-white">
+
+<nav class="flex items-center justify-between gap-4 py-6 text-white">
+  <!-- LOGO / NOMBRE -->
   <a href="/" class="flex items-center gap-2 text-xl font-bold hover:opacity-90 transition">
     <img src="/favicon.svg" alt="MarIAtech logo" class="h-7 w-7" />
     🌊 MarIAtech
   </a>
-  { !!navItems?.length && (
-    <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm sm:text-base">
-      {navItems.map((item) => (
-        <li>
-          <a href={item.href} class="hover:text-blue-300 transition">{item.linkText}</a>
-        </li>
-      ))}
-    </ul>
-  )}
+
+  <!-- MENÚ -->
+  <ul class="flex gap-6 text-sm sm:text-base">
+    {navItems.map((item) => (
+      <li>
+        <a href={item.href} class="hover:underline">{item.text}</a>
+      </li>
+    ))}
+  </ul>
 </nav>
