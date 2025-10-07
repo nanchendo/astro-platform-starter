@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import menu from '../data/menu.json';
+---
+
+<Layout title="Demo de Menú">
+  <h1 class="text-3xl font-bold mb-6">🍽️ {menu.nombre} — Demo</h1>
+
+  {menu.categorias.map((cat) => (
+    <section class="mb-10">
+      <h2 class="text-2xl mb-4">{cat.titulo}</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        {cat.items.map((it) => (
+          <article class="border rounded p-4">
+            {it.img && <img src={it.img} alt={it.nombre} class="mb-3 rounded" />}
+            <h3 class="font-semibold">{it.nombre}</h3>
+            <p class="text-sm text-slate-600">{it.desc}</p>
+            <p class="mt-2 font-bold">${it.precio.toLocaleString('es-CL')}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  ))}
+</Layout>
